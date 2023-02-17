@@ -546,11 +546,25 @@ function evil(){
 }
 
 function insane(){
+  // Fade to black
   document.getElementById('fade').style.animationPlayState = 'running';
+
+  // Prepare to play video
   setTimeout(function(){
     document.getElementById('video').style.visibility = 'visible';
     document.getElementById('video').play();
   }, 35000);
+
+  // Fade out all audio
+  document.querySelectorAll('audio').forEach(e => {
+    const fadeInterval = setInterval(function(){
+      if(e.volume <= 0){
+        e.pause();
+        return clearInterval(fadeInterval);
+      }
+      e.volume -= 1;
+    }, 5);
+  });
 }
 
 // Audio
