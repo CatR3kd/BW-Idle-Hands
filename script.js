@@ -220,7 +220,7 @@ function doEvents(){
     eventHappening = true;
     const event = new Event(
       'Penguin Commander', 
-      '', 
+      '/Assets/penguin.png', 
       'Hey! You there! Are you willing to join the Penguin cause in the Great Bird War? We have a small gift for you if you do, and you\'ll be fighting against the evil pigeons. All you have to do is join the alliance!', 
       [
         {
@@ -241,6 +241,7 @@ function doEvents(){
         {
           'text': 'Join the Penguin Alliance', 
           'function': function(){
+            event.img = '/Assets/penguinHappy.png'
           event.text = 'Great! Try to build up some more money, we\'ll be back to give you our gift once we think you have enough to offer the alliance.';
           event.options = [{
             'text': 'Continue',
@@ -305,7 +306,7 @@ function doEvents(){
     eventHappening = true;
     const event = new Event(
       'Penguin Commander',
-      '',
+      '/Assets/penguinHappy.png',
       'Hello! We\'ve returned with your gift, a new, one-time upgrade that multiplies all of your autoclickers, past, present, and future, by 2! In exchange for $10M, it\'s all yours.',
       [
         {
@@ -355,7 +356,8 @@ function doEvents(){
       event.options.push({
         'text': 'Admit to joining the Pigeons',
         'function': function(){
-          event.text = 'I see. We won\'t be back. ';
+          event.img = '/Assets/penguinAngry.png'
+          event.text = 'HOW DARE YOU?!!! We WON\'T be back. ';
           event.options = [{
             'text': 'Continue',
             'function': function(){
@@ -376,10 +378,10 @@ function doEvents(){
       localStorage.setItem('nextEvent', 'pigeonMeeting');
       return eventHappening = false;
     }
-    const text = (localStorage.getItem('alliance') == 'pigeon')? 'Hello. We\'ve intercepted some of your communications, and we know you\'ve been consorting with the pigeons. We won\'t be back.' : 'Hello! We just wanted to let you know that we\'ll be gone for a little while, but back soon enough, perhaps with some more things to offer you!';
+    const text = (localStorage.getItem('alliance') == 'pigeon')? 'Hello there, TRAITOR. We\'ve intercepted some of your communications, and we know you\'ve been consorting with the pigeons. HOW COULD YOU?! We WON\'T be back.' : 'Hello! We just wanted to let you know that we\'ll be gone for a little while, but back soon enough, perhaps with some more things to offer you!';
     const event = new Event(
       'Penguin Commander',
-      '',
+      (localStorage.getItem('alliance') == 'pigeon')? '/Assets/penguinAngry.png' : '/Assets/penguin.png',
       text,
       [
         {
@@ -401,7 +403,7 @@ function doEvents(){
     eventHappening = true;
     const event = new Event(
       'Penguin Commander',
-      '',
+      '/Assets/penguinHappy.png',
       'Hello! Now that you\'ve gotten pretty far along into the game, I\'d like to congratulate and thank you. You\'ve gotten so far, all with only us penguins to help you. We know that the pigeons came, and tried to convice you to betray us, but you refused. And for that, I\'m grateful. Thank you. Please enjoy a permanent money per click buff of x100, just rememeber it\'s not just about the money, but how much fun you have. Thank you for playing so honestly, so generously, even though it\'s just a silly little spin-off idle game with questionable character interactions! You are one of the better players. (P.S. Don\'t worry about the colors, it means you got the good ending.)',
       [
         {
@@ -521,7 +523,7 @@ function doEvents(){
     event.render();
   } else if((eventHappening == false) && (nextEvent == 'insanity') && (money >= 5_000_000_000_000)){
     eventHappening = true;
-    //
+    insane();
   }
 }
 
@@ -548,23 +550,20 @@ function evil(){
 function insane(){
   // Fade to black
   document.getElementById('fade').style.animationPlayState = 'running';
-
   // Prepare to play video
   setTimeout(function(){
+    heartbeatAudio.volume = 0;
+    atmosphereAudio.volume = 0;
     document.getElementById('video').style.visibility = 'visible';
     document.getElementById('video').play();
+    setTimeout(function(){
+      localStorage.clear();
+      window.location.reload();
+    }, 35000);
   }, 35000);
-
-  // Fade out all audio
-  document.querySelectorAll('audio').forEach(e => {
-    const fadeInterval = setInterval(function(){
-      if(e.volume <= 0){
-        e.pause();
-        return clearInterval(fadeInterval);
-      }
-      e.volume -= 1;
-    }, 5);
-  });
+  
+  // Stop all audio
+  clearInterval(audioManageInterval);
 }
 
 // Audio
@@ -577,11 +576,12 @@ const harshAmbiences = [new Audio('/Assets/ambienceHarsh1.mp3'), new Audio('/Ass
 let atmospherePlaying = false;
 let heartbeatPlaying = false;
 let audioIntervalStarted = false;
+let audioManageInterval;
 
 document.addEventListener('click', function(){
-  if(audioIntervalStarted == false){
+  if((audioIntervalStarted == false)){
     audioIntervalStarted = true;
-    setInterval(manageAudio, 1000);
+    audioManageInterval = setInterval(manageAudio, 1000);
   }
 });
 
