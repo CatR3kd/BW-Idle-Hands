@@ -263,7 +263,7 @@ function doEvents(){
     const addedText = (localStorage.getItem('alliance') == 'penguin')? ' The Pigeons are aware that you have already accepted and invitation from the penguins, but the Pigeons are generously allowing you to switch to the winning side. ' : ' ';
     const event = new Event(
       'Pigeon Drone',
-      '',
+      '/Assets/pigeonDrone.gif',
       `You are being cordially invited to join the Pigeon Party in the Great Bird War.${addedText}If you accept, you will be provided with many benefits to aid you in your money-making goals, decline, and you will be declared an enemy of the Pigeons.`,
       [
         {
@@ -425,7 +425,7 @@ function doEvents(){
     const addedText = (autoMult == 2)? ' We are aware that you sustained contact with the penguins, even if to purchase an upgrade. Do not let it happen again. ' : ' ';
     const event = new Event(
       'Pigeon Drone',
-      '',
+      '/Assets/pigeonDrone.gif',
       `Hello.${addedText}We can now offer you a new upgrade. Invented at the Pigeon R&D department, the superclicker clicks once every second, but instead of giving you $1, it gives you as much money as you would make by clicking once yourself. We are prepared to allow you to access the upgrade at no cost to yourself, but every superclicker you purchase will cost $10M.`,
       [
         {
@@ -451,7 +451,7 @@ function doEvents(){
     eventHappening = true;
     const event = new Event(
       'Pigeon Drone',
-      '',
+      '/Assets/pigeonDrone.gif',
       'Hello. I\'m here to congratulate you on behalf of the Pigeons for your exellence in your work. Please continue in your productivity. In other news, we now have a graphic designer, so expect a change in theming. COMPANY NOTICE: We have recieved complaints of strange events going underway, please know that we are not related to any auditory hallucinations experienced by you or other employees, if you experience any strange noises or voices, please ignore them and \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD immediately. Remember, we cannot afford to any unsafe or unhappy employees! We will contact you soon.',
       [
         {
@@ -470,7 +470,7 @@ function doEvents(){
     eventHappening = true;
     const event = new Event(
       'Pigeon Manager',
-      '',
+      '/Assets/pigeon.png',
       'Congratualtions! Now that you\'ve reached a net value of $1T, we want to offer you a full position in the Pigeon ranks. You will continue working exactly as you have been already, and receive no other benefits.',
       [
         {
@@ -493,6 +493,7 @@ function doEvents(){
         {
           'text': 'Decline',
           'function': function(){
+            event.img = '/Assets/pigeonAngry.png'
             event.text = 'You\'re too far in to leave now. You think you have any influence over yourself? Your decisions no longer matter. All that matters now is how long it takes you to give in. To realize what you did, what you chose, with the last real choice you would ever make. Accept the promotion, give in to what you\'ve chosen and accept your fate.';
             const newOption = {
               'text': 'Accept',
